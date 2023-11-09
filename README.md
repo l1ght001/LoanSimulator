@@ -1,6 +1,4 @@
 # LoanSimulator
-"Loan Simulator: A lightweight web application crafted with HTML, CSS, and JavaScript. Quickly assess and understand different loan scenarios, including monthly payments, total interest, and overall repayment amount. An intuitive tool for informed financial decision-making."
-
 The Loan Simulator is a web application designed to provide users with a quick and intuitive way to explore and understand various loan scenarios. Built with HTML, CSS, and JavaScript, this lightweight tool allows users to input key loan details and instantly receive important financial insights.
 
 ## Features
