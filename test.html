@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulateur de Prêt</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+    }
+
+    header {
+      background-color: #007BFF;
+      color: #fff;
+      padding: 1em;
+      text-align: center;
+    }
+
+    .card {
+      max-width: 600px;
+      margin: 2em auto;
+      background-color: #fff;
+      padding: 1em;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5em;
+      color: #007BFF;
+    }
+
+    input {
+      width: calc(100% - 20px);
+      padding: 5px;
+      margin-bottom: 1em;
+      box-sizing: border-box;
+      appearance: none;
+      border: none;
+      border-radius: 5px;
+      background: #f3f4f6;
+    }
+
+    input[type="range"] {
+      height: 1px;
+      outline: none;
+      transition: background-color 0.2s;
+      -webkit-appearance: none;
+      background: linear-gradient(to right, #007BFF 0%, #007BFF 50%);
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #043c78;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      appearance: none;
+      border: 1px solid #007BFF;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #fff;
+      padding: 0.5em 1em;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #result {
+      margin-top: 1em;
+      color: #007BFF;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="title mx-auto flex p-10 justify-center font-bold text-3xl text-orange-600">
+      Simulateur de Prêt
+    </div>
+    <div class="px-4 font-semibold text-md">
+      Choisissez le taux, le montant et la durée de votre prêt
+    </div>
+  </header>
+
+  <div class="card">
+    <label for="range1">Montant (DHS)</label>
+    <input type="range" id="range1" oninput="updateInput('range1', 'amount')" min="0" max="500000" step="50000">
+
+    <label for="range2">Taux (%)</label>
+    <input type="range" id="range2" oninput="updateInput('range2', 'interest')" min="0" max="13" step="1">
+
+    <label for="range3">Durée (MOIS)</label>
+    <input type="range" id="range3" oninput="updateInput('range3', 'years')" min="0" max="300" step="5">
+  </div>
+
+  <div class="card">
+    <label for="amount">Montant (DHS)</label>
+    <input type="number" id="amount" placeholder="Entrez le montant du prêt" readonly>
+  </div>
+
+  <div class="card">
+    <label for="interest">Taux (%)</label>
+    <input type="number" id="interest" placeholder="Entrez le taux d'intérêt" readonly>
+  </div>
+
+  <div class="card">
+    <label for="years">Durée (MOIS)</label>
+    <input type="number" id="years" placeholder="Entrez la durée du prêt en mois" readonly>
+  </div>
+
+  <button onclick="calculateLoan()">Calculer</button>
+
+  <div id="result"></div>
+
+  <script>
+    function calculateLoan() {
+      var amount = document.getElementById('amount').value;
+      var interest = document.getElementById('interest').value;
+      var years = document.getElementById('years').value;
+
+      var principal = parseFloat(amount);
+      var calculatedInterest = parseFloat(interest) / 100 / 12;
+      var calculatedPayments = parseFloat(years) * 12;
+
+      var x = Math.pow(1 + calculatedInterest, calculatedPayments);
+      var monthlyPayment = (principal * x * calculatedInterest) / (x - 1);
+
+      var totalPayment = monthlyPayment * calculatedPayments;
+      var totalInterest = totalPayment - principal;
+
+      document.getElementById('result').innerHTML = `
+        <p>Paiement mensuel : ${monthlyPayment.toFixed(2)} DHS</p>
+      `;
+    }
+
+    function updateInput(rangeId, inputId) {
+      var rangeValue = document.getElementById(rangeId).value;
+      document.getElementById(inputId).value = rangeValue;
+    }
+  </script>
+
+</body>
+</html>
